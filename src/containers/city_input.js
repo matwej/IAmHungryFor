@@ -2,17 +2,7 @@ import Autosuggest from 'react-autosuggest';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { fetchCities } from '../actions/index';
-
-// Teach Autosuggest how to calculate suggestions for any given input value.
-const getSuggestions = value => {
-  const inputValue = value.trim().toLowerCase();
-  const inputLength = inputValue.length;
-
-  return inputLength === 0 ? [] : languages.filter(lang =>
-    lang.name.toLowerCase().slice(0, inputLength) === inputValue
-  );
-};
+import { fetchCities, fetchLocalities } from '../actions/index';
 
 // When suggestion is clicked, Autosuggest needs to populate the input element
 // based on the clicked suggestion. Teach Autosuggest how to calculate the
@@ -47,6 +37,7 @@ class CityInput extends Component {
       suggestions: []
     };
     this.onSuggestionsFetchRequested = this.onSuggestionsFetchRequested.bind(this);
+    this.onSuggestionSelected = this.onSuggestionSelected.bind(this);
   }
 
   onChange = (event, { newValue }) => {
@@ -70,6 +61,11 @@ class CityInput extends Component {
     });
   };
 
+  onSuggestionSelected = (event, { suggestion }) => {
+    console.log('selected', suggestion);
+    this.props.fetchLocalities(suggestion.id);
+  };
+
   render() {
     // Autosuggest will pass through all these props to the input element.
     const inputProps = {
@@ -80,15 +76,19 @@ class CityInput extends Component {
 
     // Finally, render it!
     return (
-      <Autosuggest
-        suggestions={this.props.cities}
-        onSuggestionsFetchRequested={this.onSuggestionsFetchRequested}
-        onSuggestionsClearRequested={this.onSuggestionsClearRequested}
-        getSuggestionValue={getSuggestionValue}
-        renderSuggestion={renderSuggestion}
-        inputProps={inputProps}
-        theme={theme}
-      />
+      <div className="form-group">
+        <Autosuggest
+          id="city_autocomplete"
+          suggestions={this.props.cities}
+          onSuggestionsFetchRequested={this.onSuggestionsFetchRequested}
+          onSuggestionsClearRequested={this.onSuggestionsClearRequested}
+          onSuggestionSelected={this.onSuggestionSelected}
+          getSuggestionValue={getSuggestionValue}
+          renderSuggestion={renderSuggestion}
+          inputProps={inputProps}
+          theme={theme}
+        />
+      </div>
     );
   }
 };
@@ -98,7 +98,7 @@ function mapStateToProps({ cities }) {
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({ fetchCities }, dispatch);
+  return bindActionCreators({ fetchCities, fetchLocalities }, dispatch);
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(CityInput);
