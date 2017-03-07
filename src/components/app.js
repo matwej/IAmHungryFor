@@ -1,9 +1,15 @@
 import React, { Component } from 'react';
+import CityInput from '../containers/city_input';
 
 export default class App extends Component {
   render() {
     return (
-      <div>React simple starter</div>
+      <form className="form-inline">
+        <div className="form-group">
+          <CityInput />
+        </div>
+        <button type="submit" className="btn btn-primary">Search</button>
+      </form>
     );
   }
 }
