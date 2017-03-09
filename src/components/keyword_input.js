@@ -1,10 +1,24 @@
-import React from 'react';
+import React, { Component } from 'react';
 
-export default (props) => {
-  return (
-    <div className="form-group">
-      <label htmlFor="keyword_input">Key: </label>
-      <input type="text" className="form-control" id="keyword_input" />
-    </div>
-  );
+export default class KeywordInput extends Component {
+  
+  handleChange = (event) => {
+    this.props.callback(event.target.value);
+  };
+
+  render() {
+    return (
+      <div className="form-group">
+        <input
+          type="text"
+          className="form-control"
+          name="keyword"
+          placeholder="Enter a keyword"
+          required="required"
+          value={this.props.value}
+          onChange={this.handleChange}
+        />
+      </div>
+    );
+  }
 }

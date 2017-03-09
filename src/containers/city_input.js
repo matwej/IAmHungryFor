@@ -62,8 +62,9 @@ class CityInput extends Component {
   };
 
   onSuggestionSelected = (event, { suggestion }) => {
-    console.log('selected', suggestion);
-    this.props.fetchLocalities(suggestion.id);
+    const suggestion_id = suggestion.id.toString();
+    this.props.fetchLocalities(suggestion_id);
+    this.props.callback(suggestion_id);
   };
 
   render() {
@@ -71,6 +72,7 @@ class CityInput extends Component {
     const inputProps = {
       placeholder: 'Type a city',
       value: this.state.value,
+      required: 'required',
       onChange: this.onChange
     };
 

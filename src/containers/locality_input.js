@@ -3,17 +3,21 @@ import { connect } from 'react-redux';
 
 class LocalityInput extends Component {
 
-  renderOption(data) {
+  renderOption = (data) => {
     return (
       <option value={data.subzone.subzone_id} key={data.subzone.subzone_id}>{data.subzone.name}</option>
     );
-  }
+  };
+
+  handleChange = (event) => {
+    this.props.callback(event.target.value);
+  };
 
   render(){
     return (
       <div className="form-group">
-        <label htmlFor="select_locality">Locality: </label>
-        <select className="form-control" id="select_locality">
+        <select className="form-control" name="locality" defaultValue="Select locality" onChange={this.handleChange}>
+          <option disabled>Select locality</option>
           {this.props.localities.map(this.renderOption)}
         </select>
       </div>
