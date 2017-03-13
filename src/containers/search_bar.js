@@ -2,8 +2,11 @@ import React, { Component } from 'react';
 import CityInput from './city_input';
 import LocalityInput from './locality_input';
 import KeywordInput from '../components/keyword_input';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import { fetchAllDailyMenus } from '../actions/fetch_menus';
 
-export default class SearchBar extends Component {
+class SearchBar extends Component {
 
   constructor() {
     super();
@@ -16,10 +19,9 @@ export default class SearchBar extends Component {
   }
 
   canBeSubmitted() {
-    const { keyword, city_id, locality_id } = this.state;
+    const { keyword, locality_id } = this.state;
     return (
       keyword.length > 3 &&
-      city_id.length > 0 &&
       locality_id.length > 0
     );
   }
@@ -29,9 +31,8 @@ export default class SearchBar extends Component {
     if (!this.canBeSubmitted()) {
       return;
     }
-    console.log(this.state.keyword);
-    console.log(this.state.locality_id);
-    console.log(this.state.city_id);
+    const { keyword, locality_id } = this.state;
+    this.props.fetchAllDailyMenus(locality_id, keyword);
   };
 
   keywordOnChange = (keyword) => {
@@ -42,17 +43,13 @@ export default class SearchBar extends Component {
     this.setState({ locality_id });
   }
 
-  cityOnChange = (city_id) => {
-    this.setState({ city_id });
-  }
-
   render() {
     const isEnabled = this.canBeSubmitted();
 
     return (
       <form onSubmit={this.onFormSubmit} className="form-inline row">
         <div className="col-sm-3">
-          <CityInput callback={this.cityOnChange} />
+          <CityInput />
         </div>
         <div className="col-sm-3">
           <LocalityInput localities={[]} callback={this.localityOnChange} />
@@ -67,3 +64,9 @@ export default class SearchBar extends Component {
     );
   }
 }
+
+function mapDispatchToProps(dispatch) {
+  return bindActionCreators({ fetchAllDailyMenus }, dispatch);
+}
+
+export default connect(null, mapDispatchToProps)(SearchBar);

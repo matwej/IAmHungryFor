@@ -1,8 +1,8 @@
 import axios from 'axios';
 
 const API_KEY = '9429e077298c3c7bfe5f97ef6626bb15';
-const ROOT_URL = 'https://developers.zomato.com/api/v2.1';
-const CONFIG = {
+export const ROOT_URL = 'https://developers.zomato.com/api/v2.1';
+export const CONFIG = {
   'headers': {
     'user-key': API_KEY,
     'Accept': 'application/json'

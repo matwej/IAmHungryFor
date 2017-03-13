@@ -64,7 +64,6 @@ class CityInput extends Component {
   onSuggestionSelected = (event, { suggestion }) => {
     const suggestion_id = suggestion.id.toString();
     this.props.fetchLocalities(suggestion_id);
-    this.props.callback(suggestion_id);
   };
 
   render() {
