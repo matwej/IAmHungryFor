@@ -9,21 +9,34 @@ function findRestaurantById(restaurants, res_id) {
   return null;
 }
 
+function getRestaurant(restaurants, menuObject) {
+  const url = menuObject.config.url;
+  return findRestaurantById(restaurants, url.substr(url.indexOf('=')+1,url.length));
+}
+
+function hasKeyword(dishObject, keyword) {
+  return dishObject.dish.name.toLowerCase().indexOf(keyword) != -1
+}
+
 export default function(state = [], action) {
   switch (action.type) {
     case LIST_MENUS:
-    const menus = action.menus.map((menuData) => {
-      if(menuData.status == 200 && menuData.data.daily_menus[0]) {
-        const menu = menuData.data.daily_menus[0].daily_menu;
-        const url = menuData.config.url;
-        const restaurant = findRestaurantById(action.restaurants, url.substr(url.indexOf('=')+1,url.length));
-        return {
-          restaurant,
-          menu,
-        };
-      };
-    });
-    return state.concat(menus.filter((item)=>{return item != undefined}));
+    var menus = [];
+    for(var i = 0;i<action.menus.length;i++) {
+      if(action.menus[i].status == 200 && action.menus[i].data.daily_menus[0]) {
+        const menu = action.menus[i].data.daily_menus[0].daily_menu;
+        const restaurant = getRestaurant(action.restaurants, action.menus[i]);
+        for(var j = 0;j<menu.dishes.length;j++) {
+          if(hasKeyword(menu.dishes[j], action.keyword)) {
+            menus.push({
+              restaurant,
+              dish: menu.dishes[j].dish
+            });
+          }
+        }
+      }
+    }
+    return state.concat(menus);
     case CLEAR_MENUS:
     return [];
   }

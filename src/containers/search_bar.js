@@ -48,16 +48,16 @@ class SearchBar extends Component {
 
     return (
       <form onSubmit={this.onFormSubmit} className="form-inline row">
-        <div className="col-sm-3">
+        <div className="col-md-3 text-center">
           <CityInput />
         </div>
-        <div className="col-sm-3">
+        <div className="col-md-3 text-center">
           <LocalityInput localities={[]} callback={this.localityOnChange} />
         </div>
-        <div className="col-sm-3">
+        <div className="col-md-3 text-center">
           <KeywordInput value={this.state.keyword} callback={this.keywordOnChange}/>
         </div>
-        <div className="col-sm-3">
+        <div className="col-md-3 text-center">
           <button type="submit" className="btn btn-primary" disabled={!isEnabled}>Search</button>
         </div>
       </form>

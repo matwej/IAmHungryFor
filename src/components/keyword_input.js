@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 
 export default class KeywordInput extends Component {
-  
+
   handleChange = (event) => {
     this.props.callback(event.target.value);
   };
@@ -13,7 +13,7 @@ export default class KeywordInput extends Component {
           type="text"
           className="form-control"
           name="keyword"
-          placeholder="Enter a keyword"
+          placeholder="Keyword (min 4 chars)"
           required="required"
           value={this.props.value}
           onChange={this.handleChange}

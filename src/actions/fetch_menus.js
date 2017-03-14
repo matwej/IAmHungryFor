@@ -4,11 +4,12 @@ import axios from 'axios';
 export const CLEAR_MENUS = 'CLEAR_MENUS';
 export const LIST_MENUS = 'LIST_MENUS';
 
-export function listMenus(restaurants, menus) {
+export function listFilteredMenus(restaurants, menus, keyword) {
   return {
     type: LIST_MENUS,
     restaurants,
-    menus
+    menus,
+    keyword
   }
 }
 
@@ -21,18 +22,18 @@ function fetchRestaurantMenus(restaurant) {
   return axios.get(url, CONFIG);
 }
 
-function handleRestaurants(restaurantResponses) {
+function processRestaurants(restaurantResponses, keyword) {
   return (dispatch) => {
     const restaurants = [].concat.apply([], restaurantResponses.map((item) => {return item.data.restaurants}));
     var menuPromises = [];
-    for (var i = 0, len = 24; i < len; i++) { // restaurants.length
+    for (var i = 0, len = restaurants.length; i < len; i++) { // restaurants.length
       menuPromises.push(fetchRestaurantMenus(restaurants[i].restaurant));
     }
-    return axios.all(menuPromises).then((responses) => dispatch(listMenus(restaurants, responses)));
+    return axios.all(menuPromises).then((responses) => dispatch(listFilteredMenus(restaurants, responses, keyword)));
   };
 }
 
-function handleSearchResponse(response, url) {
+function processSearchResponse(response, url, keyword) {
   return (dispatch) => {
     const found = response.data.results_found;
     const shown = response.data.results_shown;
@@ -41,9 +42,9 @@ function handleSearchResponse(response, url) {
       for(let i=found-shown;i>0;i-=shown) {
         more_restaurants.push(axios.get(`${url}&start=${found-i}`, CONFIG));
       }
-      return axios.all(more_restaurants).then( (responses) => dispatch(handleRestaurants(responses.concat([response]))) );
+      return axios.all(more_restaurants).then( (responses) => dispatch(processRestaurants(responses.concat([response]), keyword)) );
     } else {
-      return dispatch(handleRestaurants([response]));
+      return dispatch(processRestaurants([response], keyword));
     }
   };
 }
@@ -54,6 +55,6 @@ export function fetchAllDailyMenus(locality_id, keyword) {
     dispatch(clearMenus());
     return axios.get(
       url, CONFIG
-    ).then( (response) => dispatch(handleSearchResponse(response, url)) );
+    ).then( (response) => dispatch(processSearchResponse(response, url, keyword)) );
   };
 }

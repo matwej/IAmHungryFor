@@ -3,20 +3,42 @@ import { connect } from 'react-redux';
 
 class ResultsList extends Component {
 
+  getGmapsUrl = (restaurant) => {
+    return `https://www.google.com/maps/preview/@${restaurant.location.latitude},${restaurant.location.longitude},19z`;
+  };
+
   renderItem = (data) => {
     return (
-      <li key={data.menu.daily_menu_id}>menu_id: {data.menu.daily_menu_id}, meno: {data.restaurant.name}</li>
-    );
-  }
-
-  render() {
-    return (
-      <div>
-        <ul>
-          {this.props.menus.map(this.renderItem)}
-        </ul>
+      <div className="alert alert-info row" key={data.dish.dish_id}>
+        <div className="col-sm-9">
+          <h4>{data.dish.name}</h4>
+          <strong>
+            {data.restaurant.name},{data.restaurant.location.address}&nbsp;
+            <small>(
+              <a href={data.restaurant.url} target="_blank"><i className="glyphicon glyphicon-new-window"></i>open in Zomato</a>&nbsp;
+              <a href={this.getGmapsUrl(data.restaurant)} target="_blank"><i className="glyphicon glyphicon-pushpin"></i>open in GMaps</a>
+            )</small>
+          </strong>
+        </div>
+        <div className="col-sm-3 text-right">
+          <h4>Price: {data.dish.price.length ? data.dish.price : '-'}</h4>
+        </div>
       </div>
     );
+  };
+
+  render() {
+    if(this.props.menus.length) {
+      return (
+        <div>
+          {this.props.menus.map(this.renderItem)}
+        </div>
+      );
+    } else {
+      return (
+        <div className="clearfix"></div>
+      );
+    }
   }
 }
 
