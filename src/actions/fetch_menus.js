@@ -1,16 +1,15 @@
 import { CONFIG, ROOT_URL } from './index';
 import axios from 'axios';
 
-export const FETCH_MENUS = 'FETCH_MENUS';
 export const CLEAR_MENUS = 'CLEAR_MENUS';
+export const LIST_MENUS = 'LIST_MENUS';
 
-function createMenuAction(restaurant, dailyMenu) {
-  console.log('actioon', restaurant, dailyMenu);
+export function listMenus(restaurants, menus) {
   return {
-    type: FETCH_MENUS,
-    restaurant,
-    dailyMenu
-  };
+    type: LIST_MENUS,
+    restaurants,
+    menus
+  }
 }
 
 export function clearMenus() {
@@ -19,52 +18,42 @@ export function clearMenus() {
 
 function fetchRestaurantMenus(restaurant) {
   const url = `${ROOT_URL}/dailymenu?res_id=${restaurant.id}`;
-  return (dispatch) => {
-    return axios.get(
-      url, CONFIG
-    ).then(
-      (response) => dispatch(createMenuAction(restaurant, response.data.daily_menus[0].daily_menu))
-    ).catch(
-      (error) => {}
-    );
-  };
+  return axios.get(url, CONFIG);
 }
 
-function handleSearchResponse(response) {
+function handleRestaurants(restaurantResponses) {
   return (dispatch) => {
-    const restaurants = response.data.restaurants;
+    const restaurants = [].concat.apply([], restaurantResponses.map((item) => {return item.data.restaurants}));
     var menuPromises = [];
-    for (var i = 0, len = 2; i < len; i++) { // restaurants.length
-      menuPromises.push(dispatch(fetchRestaurantMenus(restaurants[i].restaurant)));
+    for (var i = 0, len = 24; i < len; i++) { // restaurants.length
+      menuPromises.push(fetchRestaurantMenus(restaurants[i].restaurant));
     }
-    return Promise.all(menuPromises);
+    return axios.all(menuPromises).then((responses) => dispatch(listMenus(restaurants, responses)));
   };
 }
 
-function handleOther(response, url) {
-  const found = response.data.results_found;
-  const shown = response.data.results_shown;
-  if(found > shown) {
-    for(let i=found-shown;i>0;i-=shown) {
-      const count_url = `${url}&start=${found-i}`;
-      console.log(count_url);
+function handleSearchResponse(response, url) {
+  return (dispatch) => {
+    const found = response.data.results_found;
+    const shown = response.data.results_shown;
+    if(found > shown) {
+      var more_restaurants = [];
+      for(let i=found-shown;i>0;i-=shown) {
+        more_restaurants.push(axios.get(`${url}&start=${found-i}`, CONFIG));
+      }
+      return axios.all(more_restaurants).then( (responses) => dispatch(handleRestaurants(responses.concat([response]))) );
+    } else {
+      return dispatch(handleRestaurants([response]));
     }
-  }
-  return Promise.all();
+  };
 }
 
 export function fetchAllDailyMenus(locality_id, keyword) {
   const url = `${ROOT_URL}/search?entity_type=subzone&entity_id=${locality_id}`;
   return (dispatch) => {
     dispatch(clearMenus());
-
     return axios.get(
       url, CONFIG
-    ).then(
-      (response) => {
-        dispatch(handleSearchResponse(response));//,
-        // dispatch(handleOther(response, url))
-      }
-    );
+    ).then( (response) => dispatch(handleSearchResponse(response, url)) );
   };
 }

@@ -5,7 +5,7 @@ class ResultsList extends Component {
 
   renderItem = (data) => {
     return (
-      <li key={data.id}>menu_id: {data.id}, meno: {data.rname}</li>
+      <li key={data.menu.daily_menu_id}>menu_id: {data.menu.daily_menu_id}, meno: {data.restaurant.name}</li>
     );
   }
 
