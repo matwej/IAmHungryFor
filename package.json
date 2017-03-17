@@ -1,9 +1,9 @@
 {
-  "name": "redux-simple-starter",
+  "name": "i-am-hungry-for",
   "version": "1.0.0",
-  "description": "Simple starter package for Redux with React and Babel support",
+  "description": "Simple Zomato API consume app for React+Redux training derived from StephenGrider/ReduxSimpleStarter",
   "main": "index.js",
-  "repository": "git@github.com:StephenGrider/ReduxSimpleStarter.git",
+  "repository": "git@github.com:matwej/IAmHungryFor.git",
   "scripts": {
     "start": "node ./node_modules/webpack-dev-server/bin/webpack-dev-server.js",
     "test": "mocha --compilers js:babel-core/register --require ./test/test_helper.js --recursive ./test",
@@ -24,6 +24,7 @@
     "jsdom": "^8.1.0",
     "mocha": "^2.4.5",
     "react-addons-test-utils": "^0.14.7",
+    "script-loader": "^0.7.0",
     "style-loader": "^0.13.2",
     "url-loader": "^0.5.8",
     "webpack": "^1.14.0",
@@ -34,6 +35,7 @@
     "babel-preset-react": "^6.23.0",
     "babel-preset-stage-1": "^6.1.18",
     "bootstrap": "^3.3.7",
+    "jquery": "^2.2.4",
     "lodash": "^3.10.1",
     "react": "^0.14.3",
     "react-autosuggest": "^9.0.0",
@@ -44,6 +46,7 @@
     "redux": "^3.0.4",
     "redux-logger": "^2.8.2",
     "redux-promise": "^0.5.3",
-    "redux-thunk": "^2.2.0"
+    "redux-thunk": "^2.2.0",
+    "superagent": "^3.5.0"
   }
 }

@@ -1,3 +1,5 @@
+var webpack = require("webpack");
+
 module.exports = {
   entry: [
     './src/index.js'
@@ -41,13 +43,20 @@ module.exports = {
         loader: 'file'
       },
       {
+        test: /\.exec\.js$/,
+        loader: 'script-loader'
+      },
+      {
         test: /\.svg(\?v=\d+\.\d+\.\d+)?$/,
         loader: 'url?limit=10000&mimetype=image/svg+xml'
       }
     ]
   },
   resolve: {
-    extensions: ['', '.js', '.jsx']
+    extensions: ['', '.js', '.jsx'],
+    alias: {
+      jquery: "jquery/src/jquery"
+    }
   },
   devServer: {
     port: 3333,

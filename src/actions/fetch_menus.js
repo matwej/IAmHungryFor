@@ -26,7 +26,7 @@ function processRestaurants(restaurantResponses, keyword) {
   return (dispatch) => {
     const restaurants = [].concat.apply([], restaurantResponses.map((item) => {return item.data.restaurants}));
     var menuPromises = [];
-    for (var i = 0, len = restaurants.length; i < len; i++) { // restaurants.length
+    for (var i = 0, len = restaurants.length; i < len; i++) {
       menuPromises.push(fetchRestaurantMenus(restaurants[i].restaurant));
     }
     return axios.all(menuPromises).then((responses) => dispatch(listFilteredMenus(restaurants, responses, keyword)));
