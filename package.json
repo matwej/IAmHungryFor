@@ -14,29 +14,24 @@
   "author": "Matej Pivarči",
   "license": "ISC",
   "devDependencies": {
-    "babel-core": "^6.24.0",
-    "babel-loader": "^6.4.0",
-    "babel-preset-es2015": "^6.24.0",
-    "babel-preset-react": "^6.1.18",
     "chai": "^3.5.0",
     "chai-jquery": "^2.0.0",
-    "css-loader": "^0.27.3",
-    "file-loader": "^0.10.1",
-    "jquery": "^2.2.1",
     "jsdom": "^8.1.0",
     "mocha": "^2.4.5",
     "react-addons-test-utils": "^0.14.7",
-    "script-loader": "^0.7.0",
-    "style-loader": "^0.13.2",
-    "url-loader": "^0.5.8",
-    "webpack": "^1.14.0",
     "webpack-dev-server": "^1.14.0"
   },
   "dependencies": {
     "axios": "^0.15.3",
+    "babel-core": "^6.24.0",
+    "babel-loader": "^6.4.0",
+    "babel-preset-es2015": "^6.24.0",
     "babel-preset-react": "^6.23.0",
     "babel-preset-stage-1": "^6.1.18",
     "bootstrap": "^3.3.7",
+    "css-loader": "^0.27.3",
+    "express": "^4.15.2",
+    "file-loader": "^0.10.1",
     "jquery": "^2.2.4",
     "lodash": "^3.10.1",
     "react": "^0.14.3",
@@ -47,6 +42,10 @@
     "redux": "^3.0.4",
     "redux-logger": "^2.8.2",
     "redux-promise": "^0.5.3",
-    "redux-thunk": "^2.2.0"
+    "redux-thunk": "^2.2.0",
+    "script-loader": "^0.7.0",
+    "style-loader": "^0.13.2",
+    "url-loader": "^0.5.8",
+    "webpack": "^1.14.0"
   }
 }
