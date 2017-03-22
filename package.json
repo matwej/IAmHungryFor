@@ -11,7 +11,7 @@
     "postinstall": "webpack -p --config webpack.prod.config.js",
     "start": "node server.js"
   },
-  "author": "",
+  "author": "Matej Pivarči",
   "license": "ISC",
   "devDependencies": {
     "babel-core": "^6.24.0",
@@ -44,11 +44,9 @@
     "react-bootstrap": "^0.30.8",
     "react-dom": "^0.14.3",
     "react-redux": "^4.0.0",
-    "react-router": "^2.0.1",
     "redux": "^3.0.4",
     "redux-logger": "^2.8.2",
     "redux-promise": "^0.5.3",
     "redux-thunk": "^2.2.0",
-    "superagent": "^3.5.0"
   }
 }
