@@ -18,7 +18,7 @@ function hasKeyword(dishObject, keyword) {
   return dishObject.dish.name.toLowerCase().indexOf(keyword) != -1
 }
 
-export default function(state = [], action) {
+export default function(state = {list: [], loader: false}, action) {
   switch (action.type) {
     case LIST_MENUS:
     var menus = [];
@@ -36,9 +36,9 @@ export default function(state = [], action) {
         }
       }
     }
-    return state.concat(menus);
+    return {list: menus, loader: false};
     case CLEAR_MENUS:
-    return [];
+    return {list: [], loader: true};
   }
   return state;
 }

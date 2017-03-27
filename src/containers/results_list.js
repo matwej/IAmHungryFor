@@ -34,16 +34,20 @@ class ResultsList extends Component {
           {this.props.menus.map(this.renderItem)}
         </div>
       );
-    } else {
+    } else if (this.props.loader) {
       return (
-        <div className="clearfix"></div>
+        <div className="text-center">
+          <h1 className="glyphicon glyphicon-refresh right-spinner"></h1>
+        </div>
       );
+    } else {
+      return <div className="clearfix"></div>;
     }
   }
 }
 
 function mapStateToProps({ menus }) {
-  return { menus };
+  return { menus: menus.list, loader: menus.loader };
 }
 
 export default connect(mapStateToProps)(ResultsList);
