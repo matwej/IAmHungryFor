@@ -24,10 +24,10 @@ function fetchRestaurantMenus(restaurant) {
 
 function processRestaurants(restaurantResponses, keyword) {
   return (dispatch) => {
-    const restaurants = [].concat.apply([], restaurantResponses.map((item) => {return item.data.restaurants}));
+    const restaurants = [].concat.apply([], restaurantResponses.map((item) => {return item.data.restaurants})).reduce((o,item)=>{o[item.restaurant.id] = item.restaurant;return o;},{});
     var menuPromises = [];
-    for (var i = 0, len = restaurants.length; i < len; i++) {
-      menuPromises.push(fetchRestaurantMenus(restaurants[i].restaurant));
+    for(var key in restaurants) {
+      menuPromises.push(fetchRestaurantMenus(restaurants[key]));
     }
     return axios.all(menuPromises).then((responses) => dispatch(listFilteredMenus(restaurants, responses, keyword)));
   };

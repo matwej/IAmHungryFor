@@ -1,17 +1,8 @@
 import { CLEAR_MENUS, LIST_MENUS } from '../actions/fetch_menus';
 
-function findRestaurantById(restaurants, res_id) {
-  for (var i = 0, len = restaurants.length; i < len; i++) {
-    if(restaurants[i].restaurant.id == res_id) {
-      return restaurants[i].restaurant;
-    }
-  }
-  return null;
-}
-
 function getRestaurant(restaurants, menuObject) {
   const url = menuObject.config.url;
-  return findRestaurantById(restaurants, url.substr(url.indexOf('=')+1,url.length));
+  return restaurants[parseInt(url.substr(url.indexOf('=')+1,url.length))];
 }
 
 function hasKeyword(dishObject, keyword) {
